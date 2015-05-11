@@ -21,8 +21,9 @@ public class Die {
         faceValue = roll();
     }
     
-    private int roll() {
-        return (int) (numSides * Math.random() + 1);
+    public int roll() {
+        faceValue = (int) (numSides * Math.random() + 1);
+        return faceValue;
     }
     
     public int getNumSides() {
