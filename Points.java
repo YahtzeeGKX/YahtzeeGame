@@ -8,7 +8,7 @@
  * NOTE: Author of the selectionSort method: Lewis/Loftus/Cocking
  */
 
-import javax.swing.*;
+import javax.swing.JButton;
 
 public class Points
 {
