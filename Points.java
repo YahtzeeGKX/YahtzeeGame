@@ -10,8 +10,7 @@
 
 import javax.swing.JButton;
 
-public class Points
-{
+public class Points {
     public static int getPoints(JButton button, int[] arr) {
         int[] sort = arr;
         sort = selectionSort(sort);
@@ -99,8 +98,7 @@ public class Points
     //  Sorts the specified array of integers using the selection
     //  sort algorithm.
     //-----------------------------------------------------------------
-    private static int[] selectionSort (int[] numbers)
-    {
+    private static int[] selectionSort (int[] numbers) {
         int min, temp;
 
         for (int index = 0; index < numbers.length-1; index++)
