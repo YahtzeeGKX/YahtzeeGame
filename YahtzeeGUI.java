@@ -92,7 +92,10 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
                 return;
             }
         }
-        scoreButtonClicked(button);
+        if(button == scoreButtons[0])
+            rollUnselected();
+        else
+            scoreButtonClicked(button);
     }
     // The code executed when a button is clicked
     private void scoreButtonClicked(JButton button) {
@@ -111,6 +114,15 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         else
             button.setBackground(Color.WHITE);
         update();
+    }
+
+    private void rollUnselected(){
+        for(int i=0; i<diceButtons.length; i++){
+            if(diceButtons[i].getBackground() == Color.WHITE){
+                rolls[i] = myDie.roll();
+                diceButtons[i].setIcon(pics[rolls[i]-1]);
+            }
+        }
     }
 
     private void update(){
