@@ -99,7 +99,7 @@ public class Points
     //  Sorts the specified array of integers using the selection
     //  sort algorithm.
     //-----------------------------------------------------------------
-    private int[] selectionSort (int[] numbers)
+    private static int[] selectionSort (int[] numbers)
     {
         int min, temp;
 
