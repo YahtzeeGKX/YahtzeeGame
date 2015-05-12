@@ -20,7 +20,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
 
     Die myDie;
 
-    public void startOfGame() {
+    public void run() {
         // creates a new frame for the scoreboard
         JFrame frame = new JFrame("Yahtzee!");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
