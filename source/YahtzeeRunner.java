@@ -1,9 +1,9 @@
 /*
- * File: SCRunner.java
+ * File: YahtzeeRunner.java
  * Name: Giacalone/Kelly/Xue
  * Date: 05/10/2015
  * -------------------------
- * Runs the Scorecard.
+ * Runs the YahtzeeGUI.
  */
 
 public class YahtzeeRunner
