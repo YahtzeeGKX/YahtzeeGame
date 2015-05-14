@@ -8,6 +8,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
     private JPanel scoreButtonPanel;
     private JPanel diceButtonPanel;
     private JPanel scorePanel;
+    private JFrame frame;
     
     private JButton[] diceButtons;
     private JComponent[] scoreButtons;
@@ -20,12 +21,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
 
     Die myDie;
 
-    public void run() {
-        // creates a new frame for the scoreboard
-        JFrame frame = new JFrame("Yahtzee!");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new GridLayout(3,1));
-        
+    private void newGame() {
         // creates a new panel for the buttons
         scoreButtonPanel = new JPanel();
         scoreButtonPanel.setLayout(new GridLayout(13, 1));
@@ -41,7 +37,6 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         catsLeft = 13;
         uppBonus = 0;
         totScore = 0;
-        sessionHighScore = 0;
 
         initButton();
         
@@ -51,13 +46,13 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         frame.pack();
         frame.setVisible(true);
     }
-
-    private void reset(){
-        rollsLeft = 3;
-        catsLeft = 13;
-        uppBonus = 0;
-        totScore = 0;
-        initButton();
+    
+    public void createFrame() {
+        // creates a new frame for the scoreboard
+        frame = new JFrame("Yahtzee!");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new GridLayout(3,1));
+        newGame();
     }
     
     // Sets up the buttons
@@ -110,6 +105,8 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
     private void scoreButtonClicked(JButton button) {
         int score = Points.getPoints(button, rolls);
         totScore += score;
+        if(totScore >= sessionHighScore)
+        sessionHighScore = totScore;
         rollsLeft = 3;
         catsLeft--;
         for(int i=0;i<scoreButtons.length;i++){
@@ -131,8 +128,6 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
             if(uppBonus >= 63)
                 totScore += 35;
             ((JButton)scoreButtons[0]).setText("New Game");
-            if(totScore > sessionHighScore)
-                sessionHighScore = totScore;
         }
         else
             rollUnselected();
@@ -148,7 +143,10 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
 
     private void rollUnselected(){
         if(((JButton)scoreButtons[0]).getText().equals("New Game")){
-            reset();
+            frame.remove(diceButtonPanel);
+            frame.remove(scoreButtonPanel);
+            frame.remove(scorePanel);
+            newGame();
         }
         else if(rollsLeft > 0){
             rollsLeft--;
