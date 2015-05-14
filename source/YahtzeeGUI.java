@@ -16,8 +16,11 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
     private int[] rolls;
     private int rollsLeft, catsLeft, totScore, uppBonus, sessionHighScore;
 
-    private final ImageIcon[] pics = {new ImageIcon("Pictures/1.png"), new ImageIcon("Pictures/2.png"), new ImageIcon("Pictures/3.png"), 
-            new ImageIcon("Pictures/4.png"), new ImageIcon("Pictures/5.png"), new ImageIcon("Pictures/6.png")};
+    private final ImageIcon[][] pics = {
+            {new ImageIcon("Pictures/1.png"), new ImageIcon("Pictures/2.png"), new ImageIcon("Pictures/3.png"), 
+            new ImageIcon("Pictures/4.png"), new ImageIcon("Pictures/5.png"), new ImageIcon("Pictures/6.png")}, 
+            {new ImageIcon("Pictures/1YELL.png"), new ImageIcon("Pictures/2YELL.png"), new ImageIcon("Pictures/3YELL.png"), 
+            new ImageIcon("Pictures/4YELL.png"), new ImageIcon("Pictures/5YELL.png"), new ImageIcon("Pictures/6YELL.png")}};
 
     Die myDie;
 
@@ -28,7 +31,6 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         diceButtonPanel = new JPanel();
         diceButtonPanel.setLayout(new GridLayout(1,5));
         scorePanel = new JPanel();
-        scorePanel.setLayout(new GridLayout(1,1));
         
         myDie = new Die();
         rolls = new int[5];
@@ -118,7 +120,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         }
 
         for(JButton j: diceButtons)
-            j.setBackground(Color.WHITE);
+            j.setIcon(pics[0][0]);
 
         if(button.getText().equals("Ones") || button.getText().equals("Twos") || button.getText().equals("Threes")
         || button.getText().equals("Fours") || button.getText().equals("Five") || button.getText().equals("Sixes"))
@@ -134,10 +136,16 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
     }
 
     private void changeDieBackground(JButton button) {
-        if(button.getBackground() == Color.WHITE)
-            button.setBackground(Color.YELLOW);
-        else
-            button.setBackground(Color.WHITE);
+        boolean found = false;
+        for(int color = 0; color < 2 && !found; color++){
+            for(int die = 0; die < pics[0].length && !found; die++){
+                if(button.getIcon() == pics[color][die]){
+                    button.setIcon(pics[Math.abs(color-1)][die]);
+                    found = true;
+                }
+            }
+        }
+
         update();
     }
 
@@ -151,9 +159,10 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         else if(rollsLeft > 0){
             rollsLeft--;
             for(int i=0; i<diceButtons.length; i++){
-                if(diceButtons[i].getBackground() == Color.WHITE){
+                for(ImageIcon aWhiteIcon: pics[0])
+                if(diceButtons[i].getIcon() == aWhiteIcon || diceButtons[i].getIcon() == null){
                     rolls[i] = myDie.roll();
-                    diceButtons[i].setIcon(pics[rolls[i]-1]);
+                    diceButtons[i].setIcon(pics[0][rolls[i]-1]);
                 }
             }
             update();
@@ -161,6 +170,8 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
     }
 
     private void update(){
+        frame.remove(scorePanel);
+        
         ((JButton)scoreButtons[0]).setText("Roll Unselected Dice (" + rollsLeft + " rolls remaining)");
 
         scoreButtonPanel.removeAll();
@@ -173,8 +184,10 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
             diceButtonPanel.add(button);
         scorePanel.add(new JLabel("Total Score: " + totScore + "           High-Score: " + sessionHighScore));
 
-        scorePanel.repaint();
-        scoreButtonPanel.repaint();
         diceButtonPanel.repaint();
+        scoreButtonPanel.repaint();
+        scorePanel.repaint();
+        
+        frame.add(scorePanel);
     }
 }
