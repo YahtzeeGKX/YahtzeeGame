@@ -9,7 +9,7 @@
 public class YahtzeeRunner
 {
     public static void main(String[] args) {
-        YahtzeeGUI yhGame = new YahtzeeGUI();
+        YahtzeeGUI yzGame = new YahtzeeGUI();
         yzGame.createFrame();
     }
 }
