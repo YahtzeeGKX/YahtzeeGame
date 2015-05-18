@@ -1,11 +1,11 @@
-
-/**
- * Write a description of class Table here.
- * 
- * @author (your name) 
- * @version (a
- version number or a date)
+/*
+ * File: Table.java
+ * Name: Giacalone/Kelly/Xue
+ * Date: 05/19/2015
+ * -------------------------
+ * The scorecard's table for the Yahtzee table.
  */
+
 import javax.swing.*;
 import java.awt.*;
 public class Table
@@ -13,19 +13,15 @@ public class Table
     public static void main(String[] args) {
         JFrame frame = new JFrame("Scoreboard");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //frame.setLayout(new GridLayout(2, 1));
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1, 1));
         
         JTable table = new JTable(24, 3);
         table.setRowHeight(24);
-        //table.setSize(400, 260);
-        table.setFont(new Font("Arial", Font.PLAIN, 14));
-        
-        /*JTable lowerSection = new JTable(13, 3);
-        lowerSection.setRowHeight(24);
-        lowerSection.setSize(400, 260);
-        lowerSection.setFont(new Font("Arial", Font.PLAIN, 14));*/
+        table.setFont(new Font("Arial", Font.PLAIN, 14));               
+        table.setShowGrid(true);
+        table.setGridColor(Color.black);
+        table.setEnabled(false);
         
         table.setShowGrid(true);
         table.setGridColor(Color.black);
@@ -41,12 +37,7 @@ public class Table
         table.setValueAt("Sixes", 6, 0);
         table.setValueAt("Total Score", 7, 0);
         table.setValueAt("Bonus", 8, 0);
-        //table.setValueAt("Total", 9, 0);
         table.setSize(400, 260);
-                
-        table.setShowGrid(true);
-        table.setGridColor(Color.black);
-        table.setEnabled(false);
         
         table.setValueAt("Lower Section", 10, 0);
         table.setValueAt("3 of a Kind", 11, 0);
@@ -65,14 +56,31 @@ public class Table
         
         table.repaint();
         panel.add(table);
-        //panel.add(lowerSection);
         panel.repaint();
         
         frame.setContentPane(panel);
-        //frame.getContentPane().add(table);
-        //frame.getContentPane().add(lowerSection);
         frame.setSize(400, 598);
         frame.repaint();
         frame.setVisible(true);
+    }
+    
+    private static int total(JTable table, int col) {
+        int upperSection = 0;
+        int lowerSection = 0;
+        
+        for(int i = 1; i < 7; i++)
+            upperSection += Integer.parseInt((String) table.getValueAt(i, col));
+        table.setValueAt(upperSection, 7, col);
+        if(upperSection >= 63)
+            table.setValueAt(35, 8, col);
+        
+        for(int i = 11; i < 21; i++)
+            lowerSection += Integer.parseInt((String) table.getValueAt(i, col));
+        table.setValueAt(lowerSection, 21, col);
+        table.setValueAt(upperSection + Integer.parseInt((String) table.getValueAt(8, col)), 22, col);
+        int grandTotal = Integer.parseInt((String) table.getValueAt(21, col)) 
+            + Integer.parseInt((String) table.getValueAt(22, col));
+        table.setValueAt(grandTotal, 23, col);
+        return grandTotal;
     }
 }
