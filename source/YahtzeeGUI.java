@@ -9,18 +9,21 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
     private JPanel diceButtonPanel;
     private JPanel tablePanel;
     private JPanel rollPanel;
+    private JPanel winnerPanel;
     private JFrame frame;
     //A specific button for rolling the dice
     private JButton rollButton;
-    
+
+    private JLabel winner;
+
     //An array of buttons representing the dice
     private JButton[] diceButtons;
     //A table for the scorecard.
     private JTable table;
-    
+
     //The different players, and a marker for which play is currently taking his/her turn
     private PlayerCard player1, player2, currPlayer;
-    
+
     //An array for the actual rolls of the dice
     private int[] rolls;
     //The amount of rolls the player has remaining on a given turn
@@ -33,8 +36,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
             {new ImageIcon("Pictures/1Y.png"), new ImageIcon("Pictures/2Y.png"), new ImageIcon("Pictures/3Y.png"), 
                 new ImageIcon("Pictures/4Y.png"), new ImageIcon("Pictures/5Y.png"), new ImageIcon("Pictures/6Y.png")}};
     //private AI ai = new AI(this);
-    
-    
+
     //Resets the game without creating a new frame. All information is put back to their default values.
     private void newGame() {
         // creates a new panel for the buttons
@@ -47,6 +49,10 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         rollPanel = new JPanel();
 
         tablePanel = new JPanel();
+
+        winnerPanel = new JPanel();
+
+        winner = new JLabel();
 
         rolls = new int[5];
 
@@ -63,6 +69,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         frame.add(scoreButtonPanel, BorderLayout.WEST);
         frame.add(rollPanel, BorderLayout.CENTER);
         frame.add(tablePanel, BorderLayout.EAST);
+        frame.add(winnerPanel, BorderLayout.SOUTH);
         frame.pack();
         frame.setVisible(true);
     }
@@ -88,13 +95,13 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         for(int i=0; i<13; i++){
             ((JButton)player1.getComponentAtIndex(i)).addActionListener(this);
             ((JButton)player2.getComponentAtIndex(i)).addActionListener(this);
-            ((JButton)player1.getComponentAtIndex(i)).setSize(200, 500);
-            ((JButton)player2.getComponentAtIndex(i)).setSize(200, 500);
+            ((JButton)player1.getComponentAtIndex(i)).setPreferredSize(new Dimension(150, 50));
+            ((JButton)player2.getComponentAtIndex(i)).setPreferredSize(new Dimension(150, 50));
         }
 
         rollButton = new JButton("Roll Unselected Dice (" + rollsLeft + " rolls remain");
         rollButton.addActionListener(this);
-        rollButton.setSize(2000, 1000);
+        rollButton.setPreferredSize(new Dimension(400, 75));
 
         rollUnselected();
     }
@@ -108,7 +115,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         table.setShowGrid(true);
         table.setGridColor(Color.BLACK);
         table.setEnabled(false);
-        
+
         table.setValueAt("Upper Section", 0, 0);
         table.setValueAt("Player 1", 0, 1);
         table.setValueAt("Player 2", 0, 2);
@@ -140,7 +147,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         JButton button = (JButton) e.getSource();
         determineButton(button);
     }
-    
+
     public void determineButton(JButton button){
         if(button.getIcon() != null)
             changeDieBackground(button); 
@@ -150,6 +157,10 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
             scoreButtonClicked(button);
     }
     
+    public void determineButton(int dieIndex){
+        changeDieBackground(diceButtons[dieIndex]);
+    }
+
     // The code executed when a button is clicked
     private void scoreButtonClicked(JButton button) {
         currPlayer.removeButton(currPlayer.indexOfButton(button));
@@ -199,19 +210,19 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
             frame.remove(diceButtonPanel);
             frame.remove(scoreButtonPanel);
             frame.remove(rollPanel);
+            frame.remove(winnerPanel);
             newGame();
         }
         else if(rollsLeft > 0){
             rollsLeft--;
-            for(int i=0; i<diceButtons.length; i++)
-                for(ImageIcon aWhiteIcon: pics[0])
-                    if(diceButtons[i].getIcon() == aWhiteIcon || diceButtons[i].getIcon() == null){
-                        rolls[i] = (int)((6 * Math.random()) + 1);
-                        diceButtons[i].setIcon(pics[0][rolls[i]-1]);
-                        System.out.println("Rolling die " + i);
-                        break;}
+            for(int i=0; i<diceButtons.length; i++){
+                if(isSelectedButton(i)){
+                    rolls[i] = (int)((6 * Math.random()) + 1);
+                    diceButtons[i].setIcon(pics[0][rolls[i]-1]);
+                }
+            }
             for(int i: rolls)
-            System.out.println(i + ", ");
+                System.out.println(i + ", ");
             update();
         }
     }
@@ -239,6 +250,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         scoreButtonPanel.repaint();
         rollPanel.repaint();
         tablePanel.repaint();
+        winnerPanel.repaint();
     }
 
     private void findTotals(){
@@ -257,11 +269,29 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
                 table.setValueAt("0", 8, player);
             for(int i=11;i<=17;i++)
                 lowerSec += Integer.parseInt((String) table.getValueAt(i, player));
-            
+
             table.setValueAt("" + lowerSec, 18, player);
             table.setValueAt("" + upperSec, 19, player);
             table.setValueAt("" + (lowerSec+upperSec), 20, player);
         }
+        if(((String)table.getValueAt(20, 1)).compareTo((String)table.getValueAt(20, 2)) > 0)
+            winner.setText("The Winner is Player 1!");
+        else if(((String)table.getValueAt(20, 1)).compareTo((String)table.getValueAt(20, 2)) < 0)
+            winner.setText("The Winner is Player 2!");
+        else
+            winner.setText("It is a tie!");
+        winnerPanel.add(winner);
         update();
+    }
+
+    public boolean isSelectedButton(int index){
+        for(ImageIcon aWhiteIcon: pics[0])
+            if(diceButtons[index].getIcon() == aWhiteIcon || diceButtons[index].getIcon() == null)
+                return true;
+        return true;
+    }
+
+    public int getRoll(int index){
+        return rolls[index];
     }
 }
