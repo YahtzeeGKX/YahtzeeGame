@@ -151,14 +151,17 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
     public void determineButton(JButton button){
         if(button.getIcon() != null)
             changeDieBackground(button); 
-        else if(button == rollButton)
+        else if(button.getText().equals(rollButton.getText()))
             rollUnselected();
         else
             scoreButtonClicked(button);
     }
     
-    public void determineButton(int dieIndex){
-        changeDieBackground(diceButtons[dieIndex]);
+    public void determineButton(int index, boolean isDie){
+        if(isDie)
+        changeDieBackground(diceButtons[index]);
+        else
+        scoreButtonClicked((JButton)currPlayer.getComponentAtIndex(index));
     }
 
     // The code executed when a button is clicked
@@ -204,7 +207,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         update();
     }
 
-    private void rollUnselected(){
+    public void rollUnselected(){
         if(rollButton.getText().equals("New Game")){
             frame.remove(tablePanel);
             frame.remove(diceButtonPanel);
