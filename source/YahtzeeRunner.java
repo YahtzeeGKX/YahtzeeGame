@@ -10,6 +10,5 @@ public class YahtzeeRunner
 {
     public static void main(String[] args) {
         YahtzeeGUI yzGame = new YahtzeeGUI();
-        yzGame.createFrame();
     }
 }
