@@ -77,6 +77,8 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         for(int i=0; i<13; i++){
             ((JButton)player1.getComponentAtIndex(i)).addActionListener(this);
             ((JButton)player2.getComponentAtIndex(i)).addActionListener(this);
+            ((JButton)player1.getComponentAtIndex(i)).setSize(200, 500);
+            ((JButton)player2.getComponentAtIndex(i)).setSize(200, 500);
         }
 
         rollButton = new JButton("Roll Unselected Dice (" + rollsLeft + " rolls remain");
@@ -224,19 +226,22 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
     private void findTotals(){
         int upperSec = 0, lowerSec = 0;
         for(int player=1;player<=2;player++){
+            upperSec = 0;
+            lowerSec = 0;
             for(int i=1;i<=6;i++)
-                upperSec += Integer.parseInt((String)table.getValueAt(i, player));
-            table.setValueAt("" + upperSec, 7, player);
+                upperSec += Integer.parseInt((String) table.getValueAt(i, player));
+            table.setValueAt("" + upperSec, 7, player); 
             if(upperSec >= 63){
                 table.setValueAt("35", 8, player);
                 upperSec += 35;
             }
             else
                 table.setValueAt("0", 8, player);
-            table.setValueAt("" + upperSec, 18, player);
             for(int i=11;i<=17;i++)
-                lowerSec += Integer.parseInt((String)table.getValueAt(i, player));
-            table.setValueAt("" + lowerSec, 19, player);
+                lowerSec += Integer.parseInt((String) table.getValueAt(i, player));
+            
+            table.setValueAt("" + lowerSec, 18, player);
+            table.setValueAt("" + upperSec, 19, player);
             table.setValueAt("" + (lowerSec+upperSec), 20, player);
         }
         update();
