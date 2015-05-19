@@ -2,29 +2,40 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+//This class creates, displays, and takes in the input for the Yahtzee Game's GUI. It also does the logic of telling when the game has ended, and keeps track of player score on a table. 
 public class YahtzeeGUI extends JFrame implements ActionListener {
+    //Declares the Panels and Frame
     private JPanel scoreButtonPanel;
     private JPanel diceButtonPanel;
     private JPanel tablePanel;
     private JPanel rollPanel;
     private JFrame frame;
-
+    //A specific button for rolling the dice
     private JButton rollButton;
-
+    
+    //An array of buttons representing the dice
     private JButton[] diceButtons;
+    //A table for the scorecard.
     private JTable table;
-
+    
+    //The different players, and a marker for which play is currently taking his/her turn
     private PlayerCard player1, player2, currPlayer;
-
+    
+    //An array for the actual rolls of the dice
     private int[] rolls;
-    private int rollsLeft, catsLeft;
-
-    private final ImageIcon[][] pics = {
+    //The amount of rolls the player has remaining on a given turn
+    private int rollsLeft;
+    //A 2D array of Images that represent each side of the dice. The first row is the white, unselected dice, and the second row are a copy that have a yellow background.
+    //(JButton.setBackground() cannot be used because Mac Java treats transparent color as white.
+    private ImageIcon[][] pics = {
             {new ImageIcon("Pictures/1.png"), new ImageIcon("Pictures/2.png"), new ImageIcon("Pictures/3.png"), 
                 new ImageIcon("Pictures/4.png"), new ImageIcon("Pictures/5.png"), new ImageIcon("Pictures/6.png")}, 
             {new ImageIcon("Pictures/1Y.png"), new ImageIcon("Pictures/2Y.png"), new ImageIcon("Pictures/3Y.png"), 
                 new ImageIcon("Pictures/4Y.png"), new ImageIcon("Pictures/5Y.png"), new ImageIcon("Pictures/6Y.png")}};
-
+    //private AI ai = new AI(this);
+    
+    
+    //Resets the game without creating a new frame. All information is put back to their default values.
     private void newGame() {
         // creates a new panel for the buttons
         scoreButtonPanel = new JPanel();
@@ -55,8 +66,8 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         frame.pack();
         frame.setVisible(true);
     }
-
-    public void createFrame() {
+    //Creates the frame, then starts the game. This is called on the first creation of the game.
+    public YahtzeeGUI() {
         // creates a new frame for the scoreboard
         frame = new JFrame("Yahtzee!");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,6 +94,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
 
         rollButton = new JButton("Roll Unselected Dice (" + rollsLeft + " rolls remain");
         rollButton.addActionListener(this);
+        rollButton.setSize(2000, 1000);
 
         rollUnselected();
     }
@@ -96,10 +108,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         table.setShowGrid(true);
         table.setGridColor(Color.BLACK);
         table.setEnabled(false);
-
-        table.setShowGrid(true);
-        table.setGridColor(Color.BLACK);
-        table.setEnabled(false);
+        
         table.setValueAt("Upper Section", 0, 0);
         table.setValueAt("Player 1", 0, 1);
         table.setValueAt("Player 2", 0, 2);
@@ -129,6 +138,10 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e){
         JButton button = (JButton) e.getSource();
+        determineButton(button);
+    }
+    
+    public void determineButton(JButton button){
         if(button.getIcon() != null)
             changeDieBackground(button); 
         else if(button == rollButton)
@@ -136,6 +149,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         else
             scoreButtonClicked(button);
     }
+    
     // The code executed when a button is clicked
     private void scoreButtonClicked(JButton button) {
         currPlayer.removeButton(currPlayer.indexOfButton(button));
@@ -193,7 +207,11 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
                 for(ImageIcon aWhiteIcon: pics[0])
                     if(diceButtons[i].getIcon() == aWhiteIcon || diceButtons[i].getIcon() == null){
                         rolls[i] = (int)((6 * Math.random()) + 1);
-                        diceButtons[i].setIcon(pics[0][rolls[i]-1]);}
+                        diceButtons[i].setIcon(pics[0][rolls[i]-1]);
+                        System.out.println("Rolling die " + i);
+                        break;}
+            for(int i: rolls)
+            System.out.println(i + ", ");
             update();
         }
     }
