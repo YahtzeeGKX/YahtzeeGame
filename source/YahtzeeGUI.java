@@ -35,10 +35,11 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
                 new ImageIcon("Pictures/4.png"), new ImageIcon("Pictures/5.png"), new ImageIcon("Pictures/6.png")}, 
             {new ImageIcon("Pictures/1Y.png"), new ImageIcon("Pictures/2Y.png"), new ImageIcon("Pictures/3Y.png"), 
                 new ImageIcon("Pictures/4Y.png"), new ImageIcon("Pictures/5Y.png"), new ImageIcon("Pictures/6Y.png")}};
-    //private AI ai = new AI(this);
+    private AI ai;
 
     //Resets the game without creating a new frame. All information is put back to their default values.
     private void newGame() {
+        ai = new AI(this);
         // creates a new panel for the buttons
         scoreButtonPanel = new JPanel();
         scoreButtonPanel.setLayout(new GridLayout(13, 1));
@@ -57,7 +58,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         rolls = new int[5];
 
         player1 = new PlayerCard("A");
-        player2 = new PlayerCard("B");
+        player2 = ai;
         currPlayer = player1;
 
         rollsLeft = 3;
@@ -186,6 +187,8 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
             currPlayer = player1;
 
         update();
+        if(currPlayer == player2) 
+            ai.turn();
 
         if(player1.isDone() && player2.isDone()){
             rollButton.setText("New Game");
@@ -225,7 +228,8 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
                 }
             }
             for(int i: rolls)
-                System.out.println(i + ", ");
+                System.out.print(i + ", ");
+            System.out.println();
             update();
         }
     }
@@ -291,7 +295,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         for(ImageIcon aWhiteIcon: pics[0])
             if(diceButtons[index].getIcon() == aWhiteIcon || diceButtons[index].getIcon() == null)
                 return true;
-        return true;
+        return false;
     }
 
     public int getRoll(int index){
