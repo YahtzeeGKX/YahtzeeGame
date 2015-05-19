@@ -3,21 +3,22 @@
  * Name: Giacalone/Kelly/Xue
  * Date: 05/10/2015
  * -------------------------
- * This takes an array of dice values and the clicked button, and returns the
+ * This takes an array od dice values and the clicked button, and returns the
  * correct number of points.
  * NOTE: Author of the selectionSort method: Lewis/Loftus/Cocking
  */
 
-import javax.swing.JButton;
+import javax.swing.*;
 
-public class Points {
+public class Points
+{
     public static int getPoints(JButton button, int[] arr) {
         int[] sort = arr;
         sort = selectionSort(sort);
             
         int total = 0;
 
-        if(button.getText().equals("Ones")) { // total = sum of the ones
+        if(button.getText().equals("Aces")) { // total = sum of the ones
             for(int i: sort)
                 if(i == 1) total += 1;
         }
@@ -41,7 +42,7 @@ public class Points {
             for(int i: sort)
                 if(i == 6) total += 6;
         }
-        else if(button.getText().equals("Three of a Kind")) {
+        else if(button.getText().equals("3 of a Kind")) {
             if((sort[0] == sort[1] && sort[1] == sort[2])
                 || (sort[1] == sort[2] && sort[2] == sort[3])
                 || (sort[2] == sort[3] && sort[3] == sort[4])) {
@@ -49,7 +50,7 @@ public class Points {
                     total += i;
             }
         }
-        else if(button.getText().equals("Four of a Kind")) {
+        else if(button.getText().equals("4 of a Kind")) {
             if((sort[0] == sort[1] && sort[1] == sort[2] && sort[2] == sort[3])
                 || (sort[1] == sort[2] && sort[2] == sort[3] && sort[3] == sort[4])) {
                 for(int i: sort)
@@ -62,7 +63,7 @@ public class Points {
             else if(sort[0] == sort[1] && sort[1] == sort[2] && sort[3] == sort[4])
                 total = 25;
         }
-        else if(button.getText().equals("Small Straight")) {
+        else if(button.getText().equals("Sm. Straight")) {
             total = 30;
             for(int i = 1; i < sort.length - 1; i++)
                 if(sort[i] != sort[i - 1] + 1)
@@ -75,7 +76,7 @@ public class Points {
             }
             
         }
-        else if(button.getText().equals("Large Straight")) {
+        else if(button.getText().equals("Lg. Straight")) {
             total = 40;
             for(int i = 1; i < sort.length; i++)
                 if(sort[i] != sort[i - 1] + 1)
@@ -98,7 +99,8 @@ public class Points {
     //  Sorts the specified array of integers using the selection
     //  sort algorithm.
     //-----------------------------------------------------------------
-    private static int[] selectionSort (int[] numbers) {
+    public static int[] selectionSort (int[] numbers)
+    {
         int min, temp;
 
         for (int index = 0; index < numbers.length-1; index++)
