@@ -223,7 +223,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         else if(rollsLeft > 0){
             rollsLeft--;
             for(int i=0; i<diceButtons.length; i++){
-                if(isSelectedButton(i)){
+                if(!isSelectedButton(i)){
                     rolls[i] = (int)((6 * Math.random()) + 1);
                     diceButtons[i].setIcon(pics[0][rolls[i]-1]);
                 }
