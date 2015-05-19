@@ -187,9 +187,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
             currPlayer = player1;
 
         update();
-        if(currPlayer == player2) 
-            ai.turn();
-
+        
         if(player1.isDone() && player2.isDone()){
             rollButton.setText("New Game");
             findTotals();
@@ -197,6 +195,9 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         }
         else
             rollUnselected();
+            
+        if(currPlayer == player2) 
+            ai.turn();
     }
 
     private void changeDieBackground(JButton button) {
@@ -294,8 +295,8 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
     public boolean isSelectedButton(int index){
         for(ImageIcon aWhiteIcon: pics[0])
             if(diceButtons[index].getIcon() == aWhiteIcon || diceButtons[index].getIcon() == null)
-                return true;
-        return false;
+                return false;
+        return true;
     }
 
     public int getRoll(int index){
