@@ -10,11 +10,15 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
     private JPanel tablePanel;
     private JPanel rollPanel;
     private JPanel winnerPanel;
+    private JMenuBar menuBar;
     private JFrame frame;
     //A specific button for rolling the dice
     private JButton rollButton;
 
     private JLabel winner;
+
+    private JMenu options, restartGame;
+    private JMenuItem soloPlay, multiPlay, setUpPlayers;
 
     //An array of buttons representing the dice
     private JButton[] diceButtons;
@@ -37,6 +41,8 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
                 new ImageIcon("Pictures/4Y.png"), new ImageIcon("Pictures/5Y.png"), new ImageIcon("Pictures/6Y.png")}};
     private AI ai;
 
+    private boolean isOnePlayer;
+
     //Resets the game without creating a new frame. All information is put back to their default values.
     private void newGame() {
         ai = new AI(this);
@@ -53,12 +59,30 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
 
         winnerPanel = new JPanel();
 
+        menuBar = new JMenuBar();
+        options = new JMenu("Options");
+        restartGame = new JMenu("Restart");
+        soloPlay = new JMenuItem("1 Player Game");
+        multiPlay = new JMenuItem("2 Player Game");
+        soloPlay.addActionListener(this);
+        multiPlay.addActionListener(this);
+        restartGame.add(soloPlay);
+        restartGame.add(multiPlay);
+        setUpPlayers = new JMenuItem("Player Options");
+        setUpPlayers.addActionListener(this);
+        options.add(restartGame);
+        options.add(setUpPlayers);
+        menuBar.add(options);
+
         winner = new JLabel();
 
         rolls = new int[5];
 
-        player1 = new PlayerCard("A");
-        player2 = ai;
+        player1 = new PlayerCard("Player 1");
+        if(isOnePlayer)
+            player2 = ai;
+        else
+            player2 = new PlayerCard("Player 2");
         currPlayer = player1;
 
         rollsLeft = 3;
@@ -71,6 +95,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         frame.add(rollPanel, BorderLayout.CENTER);
         frame.add(tablePanel, BorderLayout.EAST);
         frame.add(winnerPanel, BorderLayout.SOUTH);
+        frame.setJMenuBar(menuBar);
         frame.pack();
         frame.setVisible(true);
     }
@@ -80,6 +105,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         frame = new JFrame("Yahtzee!");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
+        isOnePlayer = true;
         newGame();
     }
 
@@ -118,8 +144,8 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         table.setEnabled(false);
 
         table.setValueAt("Upper Section", 0, 0);
-        table.setValueAt("Player 1", 0, 1);
-        table.setValueAt("Player 2", 0, 2);
+        table.setValueAt(player1.getName(), 0, 1);
+        table.setValueAt(player2.getName(), 0, 2);
         table.setValueAt("Aces", 1, 0);
         table.setValueAt("Twos", 2, 0);
         table.setValueAt("Threes", 3, 0);
@@ -145,8 +171,30 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e){
-        JButton button = (JButton) e.getSource();
-        determineButton(button);
+        if(e.getSource() == soloPlay){
+            frame.remove(tablePanel);
+            frame.remove(diceButtonPanel);
+            frame.remove(scoreButtonPanel);
+            frame.remove(rollPanel);
+            frame.remove(winnerPanel);
+            isOnePlayer = true;
+            newGame();
+        }
+        else if(e.getSource() == multiPlay){
+            frame.remove(tablePanel);
+            frame.remove(diceButtonPanel);
+            frame.remove(scoreButtonPanel);
+            frame.remove(rollPanel);
+            frame.remove(winnerPanel);
+            isOnePlayer = false;
+            newGame();
+        }
+        else if(e.getSource() == setUpPlayers)
+            openPlayerOptions();
+        else{
+            JButton button = (JButton) e.getSource();
+            determineButton(button);
+        }
     }
 
     public void determineButton(JButton button){
@@ -157,12 +205,12 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         else
             scoreButtonClicked(button);
     }
-    
+
     public void determineButton(int index, boolean isDie){
         if(isDie)
-        changeDieBackground(diceButtons[index]);
+            changeDieBackground(diceButtons[index]);
         else
-        scoreButtonClicked((JButton)currPlayer.getComponentAtIndex(index));
+            scoreButtonClicked((JButton)currPlayer.getComponentAtIndex(index));
     }
 
     // The code executed when a button is clicked
@@ -187,7 +235,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
             currPlayer = player1;
 
         update();
-        
+
         if(player1.isDone() && player2.isDone()){
             rollButton.setText("New Game");
             findTotals();
@@ -195,9 +243,9 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         }
         else
             rollUnselected();
-            
-        if(currPlayer == player2) 
-            ai.turn();
+
+        if(currPlayer == ai)
+        ai.turn();
     }
 
     private void changeDieBackground(JButton button) {
@@ -228,14 +276,11 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
                     diceButtons[i].setIcon(pics[0][rolls[i]-1]);
                 }
             }
-            for(int i: rolls)
-                System.out.print(i + ", ");
-            System.out.println();
             update();
         }
     }
 
-    private void update(){
+    public void update(){
         if(!rollButton.getText().equals("New Game"))
             rollButton.setText("Roll Unselected Dice (" + rollsLeft + " rolls remaining)");
 
@@ -301,5 +346,41 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
 
     public int getRoll(int index){
         return rolls[index];
+    }
+
+    private void openPlayerOptions(){
+        final JFrame playerOptions = new JFrame("Player Options");
+        playerOptions.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        playerOptions.setPreferredSize(new Dimension(600, 100));
+        playerOptions.setResizable(false);
+        JPanel textFields = new JPanel();
+        final JTextField player1Name = new JTextField(player1.getName());
+        final JTextField player2Name = new JTextField(player2.getName());
+        player1Name.setPreferredSize(new Dimension(150, 30));
+        player2Name.setPreferredSize(new Dimension(150, 30));
+        JButton accept = new JButton("Accept");
+        JButton cancel = new JButton("Cancel");
+        accept.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e){
+                    player1.setName(player1Name.getText());
+                    player2.setName(player2Name.getText());
+                    table.setValueAt(player1.getName(), 0, 1);
+                    table.setValueAt(player2.getName(), 0, 2);
+                    playerOptions.dispose();
+                }
+            });
+        cancel.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e){
+                    playerOptions.dispose();
+                }
+            });
+        textFields.add(player1Name);
+        textFields.add(player2Name);
+        textFields.add(accept);
+        textFields.add(cancel);
+        playerOptions.add(textFields);
+        playerOptions.setVisible(true);
+        playerOptions.pack();
+
     }
 }
