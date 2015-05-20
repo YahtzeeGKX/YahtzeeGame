@@ -327,13 +327,15 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
             table.setValueAt("" + upperSec, 19, player);
             table.setValueAt("" + (lowerSec+upperSec), 20, player);
         }
-        if(((String)table.getValueAt(20, 1)).compareTo((String)table.getValueAt(20, 2)) > 0)
-            winner.setText("The Winner is Player 1!");
-        else if(((String)table.getValueAt(20, 1)).compareTo((String)table.getValueAt(20, 2)) < 0)
-            winner.setText("The Winner is Player 2!");
+        if(Integer.parseInt((String)table.getValueAt(20, 1)) > Integer.parseInt((String)table.getValueAt(20, 2)))
+            winner.setText(player1.getName() + " wins with a score of " + (String)table.getValueAt(20,1) + "!");
+        else if(Integer.parseInt((String)table.getValueAt(20, 1)) < Integer.parseInt((String)table.getValueAt(20, 2)))
+            winner.setText(player2.getName() + " wins with a score of " + (String)table.getValueAt(20,2) + "!");
         else
-            winner.setText("It is a tie!");
+            winner.setText("It's a tie between " + player1.getName() + " and " + player2.getName() + "!");
         winnerPanel.add(winner);
+        frame.remove(scoreButtonPanel);
+        frame.add(winnerPanel, BorderLayout.WEST);
         update();
     }
 
@@ -381,6 +383,5 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         playerOptions.add(textFields);
         playerOptions.setVisible(true);
         playerOptions.pack();
-
     }
 }
