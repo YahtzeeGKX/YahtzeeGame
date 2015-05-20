@@ -61,7 +61,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
 
         menuBar = new JMenuBar();
         options = new JMenu("Options");
-        restartGame = new JMenu("Restart");
+        restartGame = new JMenu("New Game");
         soloPlay = new JMenuItem("1 Player Game");
         multiPlay = new JMenuItem("2 Player Game");
         soloPlay.addActionListener(this);
@@ -78,11 +78,13 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
 
         rolls = new int[5];
 
-        player1 = new PlayerCard("Player 1");
+        player1 = new PlayerCard(player1.getName());
         if(isOnePlayer)
             player2 = ai;
-        else
+        else if(player2.getName().equals("Computer"))
             player2 = new PlayerCard("Player 2");
+        else
+            player2 = new PlayerCard(player2.getName());
         currPlayer = player1;
 
         rollsLeft = 3;
@@ -106,6 +108,8 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         isOnePlayer = true;
+        player1 = new PlayerCard("Player 1");
+        player2 = new PlayerCard("Player 2");
         newGame();
     }
 
@@ -128,7 +132,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
 
         rollButton = new JButton("Roll Unselected Dice (" + rollsLeft + " rolls remain");
         rollButton.addActionListener(this);
-        rollButton.setPreferredSize(new Dimension(400, 75));
+        rollButton.setPreferredSize(new Dimension(300, 75));
 
         rollUnselected();
     }
@@ -139,6 +143,10 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         table.setFont(new Font("Arial", Font.PLAIN, 14));
         table.getColumn("A").setMinWidth(125);
         table.getColumn("A").setMaxWidth(125);
+        table.getColumn("B").setMinWidth(115);
+        table.getColumn("B").setMaxWidth(115);
+        table.getColumn("C").setMinWidth(115);
+        table.getColumn("C").setMaxWidth(115);
         table.setShowGrid(true);
         table.setGridColor(Color.BLACK);
         table.setEnabled(false);
@@ -178,6 +186,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
             frame.remove(rollPanel);
             frame.remove(winnerPanel);
             isOnePlayer = true;
+            openPlayerOptions();
             newGame();
         }
         else if(e.getSource() == multiPlay){
@@ -187,6 +196,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
             frame.remove(rollPanel);
             frame.remove(winnerPanel);
             isOnePlayer = false;
+            openPlayerOptions();
             newGame();
         }
         else if(e.getSource() == setUpPlayers)
@@ -245,7 +255,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
             rollUnselected();
 
         if(currPlayer == ai)
-        ai.turn();
+            ai.turn();
     }
 
     private void changeDieBackground(JButton button) {
@@ -351,10 +361,9 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
     }
 
     private void openPlayerOptions(){
-        final JFrame playerOptions = new JFrame("Player Options");
-        playerOptions.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        playerOptions.setPreferredSize(new Dimension(600, 100));
+        final JDialog playerOptions = new JDialog(frame, "Player Options", true);
         playerOptions.setResizable(false);
+        playerOptions.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         JPanel textFields = new JPanel();
         final JTextField player1Name = new JTextField(player1.getName());
         final JTextField player2Name = new JTextField(player2.getName());
@@ -377,11 +386,13 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
                 }
             });
         textFields.add(player1Name);
+        if(!isOnePlayer)
         textFields.add(player2Name);
         textFields.add(accept);
         textFields.add(cancel);
         playerOptions.add(textFields);
-        playerOptions.setVisible(true);
         playerOptions.pack();
+        playerOptions.setLocationRelativeTo(frame);
+        playerOptions.setVisible(true);
     }
 }
