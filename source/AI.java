@@ -11,7 +11,7 @@ public class AI extends PlayerCard{
     private YahtzeeGUI gui;
     
     public AI(YahtzeeGUI gui) {
-        super("Computer");
+        super("Hairy Harrie");
         this.gui = gui;
         button = 0;
         turn = 0;
