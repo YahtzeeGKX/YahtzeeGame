@@ -1,10 +1,12 @@
-
-/**
- * Write a description of class PlayerCard here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
+/*
+ * File: PlayerCard.java
+ * Name: Giacalone/Kelly/Xue
+ * Date: 05/21/2015
+ * -------------------------
+ * This class manages the buttons/moves avaliable for each player. It also
+ * keeps track of the player name.
  */
+
 import javax.swing.JComponent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
