@@ -10,16 +10,19 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 public class PlayerCard
 {
-    private JComponent[] scoreButtons;
+    protected JComponent[] scoreButtons;
     private int catsLeft;
+    private String name;
     
     public PlayerCard(){
         catsLeft = 13;
+        name = "Player";
         setUpButtons();
     }
     
     public PlayerCard(String name){
         catsLeft = 13;
+        this.name = name;
         setUpButtons();
     }
     
@@ -62,5 +65,13 @@ public class PlayerCard
         if(catsLeft <= 0)
         return true;
         return false;
+    }
+    
+    public String getName(){
+        return name;
+    }
+    
+    public void setName(String name){
+        this.name = name;
     }
 }
