@@ -1,8 +1,18 @@
+/*
+ * File: YahtzeeGUI.java
+ * Authors: Giacalone/Kelly/Xue
+ * Date: 05/21/2015
+ * ----------------------------
+ * This class creates, displays, and takes in the input for the Yahtzee Game's GUI. 
+ * It also does the logic of telling when the game has ended, and keeps track of 
+ * player score on a table. 
+ */
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-//This class creates, displays, and takes in the input for the Yahtzee Game's GUI. It also does the logic of telling when the game has ended, and keeps track of player score on a table. 
+
 public class YahtzeeGUI extends JFrame implements ActionListener {
     //Declares the Panels and Frame
     private JPanel scoreButtonPanel;
@@ -387,7 +397,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
             });
         textFields.add(player1Name);
         if(!isOnePlayer)
-        textFields.add(player2Name);
+            textFields.add(player2Name);
         textFields.add(accept);
         textFields.add(cancel);
         playerOptions.add(textFields);
