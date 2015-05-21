@@ -91,7 +91,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         player1 = new PlayerCard(player1.getName());
         if(isOnePlayer)
             player2 = ai;
-        else if(player2.getName().equals("Computer"))
+        else if(player2.getName().equals("Hairy Harrie"))
             player2 = new PlayerCard("Player 2");
         else
             player2 = new PlayerCard(player2.getName());
