@@ -321,10 +321,6 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
                     diceButtons[i].setIcon(pics[0][rolls[i]-1]);
                 }
             }
-            System.out.print(currPlayer.getName() + ":");
-            for(int i: rolls)
-                System.out.print(" " + i);
-            System.out.println();
             update();
         }
     }
