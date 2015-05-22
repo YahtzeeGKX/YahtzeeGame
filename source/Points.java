@@ -3,13 +3,12 @@
  * Name: Giacalone/Kelly/Xue
  * Date: 05/10/2015
  * -------------------------
- * This takes an array of dice values and the clicked button, and returns the
- * correct number of points. On many options, it must check whether the given
- * dice denote points or not.
+ * This takes an array od dice values and the clicked button, and returns the
+ * correct number of points.
  * NOTE: Author of the selectionSort method: Lewis/Loftus/Cocking
  */
 
-import javax.swing.JButton;
+import javax.swing.*;
 
 public class Points
 {
@@ -43,7 +42,7 @@ public class Points
             for(int i: sort)
                 if(i == 6) total += 6;
         }
-        else if(button.getText().equals("3 of a Kind")) { // total = sum of dice
+        else if(button.getText().equals("3 of a Kind")) {
             if((sort[0] == sort[1] && sort[1] == sort[2])
                 || (sort[1] == sort[2] && sort[2] == sort[3])
                 || (sort[2] == sort[3] && sort[3] == sort[4])) {
@@ -51,43 +50,43 @@ public class Points
                     total += i;
             }
         }
-        else if(button.getText().equals("4 of a Kind")) { // total = sum of dice
+        else if(button.getText().equals("4 of a Kind")) {
             if((sort[0] == sort[1] && sort[1] == sort[2] && sort[2] == sort[3])
                 || (sort[1] == sort[2] && sort[2] == sort[3] && sort[3] == sort[4])) {
                 for(int i: sort)
                     total += i;
             }
         }
-        else if(button.getText().equals("Full House")) { // total = 25
+        else if(button.getText().equals("Full House")) {
             if(sort[0] == sort[1] && sort[2] == sort[3] && (sort[3] == sort[4]))
                 total = 25;
             else if(sort[0] == sort[1] && sort[1] == sort[2] && sort[3] == sort[4])
                 total = 25;
         }
-        else if(button.getText().equals("Sm. Straight")) { // total = 30
+        else if(button.getText().equals("Sm. Straight")) {
             total = 30;
             for(int i = 1; i < sort.length - 1; i++)
                 if(sort[i] != sort[i - 1] + 1)
                     total = 0;
             if(total == 0) {
                 total = 30;
-                for(int i = 0; i < sort.length - 2; i++)
+                for(int i = 0; i < sort.length-2; i++)
                 if(sort[i] != sort[i + 1] - 1)
                     total = 0;
             }
             
         }
-        else if(button.getText().equals("Lg. Straight")) { // total = 40
+        else if(button.getText().equals("Lg. Straight")) {
             total = 40;
             for(int i = 1; i < sort.length; i++)
                 if(sort[i] != sort[i - 1] + 1)
                     total = 0;
         }
-        else if(button.getText().equals("Chance")) { // total = sum of dice
+        else if(button.getText().equals("Chance")) {
             for(int i: sort)
                 total += i;
         }
-        else if(button.getText().equals("Yahtzee!")) { // total = 50
+        else if(button.getText().equals("Yahtzee!")) {
             if(sort[0] == sort[1] && sort[1] == sort[2] && sort[2] == sort[3] && sort[3] == sort[4])
                 return 50;
         }
