@@ -281,8 +281,15 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
             currPlayer = player1;
 
         update();
-
-         rollUnselected();
+        
+        if(player1.isDone() && player2.isDone()){
+        rollPanel.remove(rollButton);
+        rollPanel.add(winner);
+        findTotals();
+        update();
+        }
+        else
+        rollUnselected();
 
         if(currPlayer == ai)
             ai.turn();
