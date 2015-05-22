@@ -1,18 +1,7 @@
-/*
- * File: YahtzeeGUI.java
- * Authors: Giacalone/Kelly/Xue
- * Date: 05/21/2015
- * ----------------------------
- * This class creates, displays, and takes in the input for the Yahtzee Game's GUI. 
- * It also does the logic of telling when the game has ended, and keeps track of 
- * player score on a table. 
- */
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
-
+ 
 public class YahtzeeGUI extends JFrame implements ActionListener {
     //Declares the Panels and Frame
     private JPanel scoreButtonPanel;
@@ -49,26 +38,28 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
                 new ImageIcon("Pictures/4.png"), new ImageIcon("Pictures/5.png"), new ImageIcon("Pictures/6.png")}, 
             {new ImageIcon("Pictures/1Y.png"), new ImageIcon("Pictures/2Y.png"), new ImageIcon("Pictures/3Y.png"), 
                 new ImageIcon("Pictures/4Y.png"), new ImageIcon("Pictures/5Y.png"), new ImageIcon("Pictures/6Y.png")}};
+    //The AI Player
     private AI ai;
-
+    //Boolean to keep track of whether the game is one or two players
     private boolean isOnePlayer;
 
     //Resets the game without creating a new frame. All information is put back to their default values.
     private void newGame() {
+        //AI is created
         ai = new AI(this);
-        // creates a new panel for the buttons
+        //Creates the panel for the scoring buttons
         scoreButtonPanel = new JPanel();
         scoreButtonPanel.setLayout(new GridLayout(13, 1));
-
+        //Creates Panel for the dice
         diceButtonPanel = new JPanel();
         diceButtonPanel.setLayout(new GridLayout(1,5));
-
+        //Creates panel for the "roll" button
         rollPanel = new JPanel();
-
+        //Creates panel for the scorecard table
         tablePanel = new JPanel();
-
+        //Creates a panel that is swapped with rollPanel when somebody wins the game
         winnerPanel = new JPanel();
-
+        //Creates the menu for restarting the game and for the opening the options
         menuBar = new JMenuBar();
         options = new JMenu("Options");
         restartGame = new JMenu("New Game");
@@ -83,25 +74,30 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         options.add(restartGame);
         options.add(setUpPlayers);
         menuBar.add(options);
-
+        //The JLabel for the winning player
         winner = new JLabel();
 
         rolls = new int[5];
-
+        //Creates 2 new playerCards to track each player's possible moves/Buttons availible to press
+        //Uses player1's name from the last game
         player1 = new PlayerCard(player1.getName());
+        
+        //If the game is one player, the 2nd player is initalized to the AI
         if(isOnePlayer)
             player2 = ai;
-        else if(player2.getName().equals("Hairy Harrie"))
-            player2 = new PlayerCard("Player 2");
+        //If there are two players, use the name from the player options.
         else
             player2 = new PlayerCard(player2.getName());
+        //Player 1 goes first
         currPlayer = player1;
 
         rollsLeft = 3;
 
         initTable();
         initButton();
-
+        
+        
+        //Adds everything to the frame
         frame.add(diceButtonPanel, BorderLayout.NORTH);
         frame.add(scoreButtonPanel, BorderLayout.WEST);
         frame.add(rollPanel, BorderLayout.CENTER);
@@ -143,10 +139,11 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         rollButton = new JButton("Roll Unselected Dice (" + rollsLeft + " rolls remain");
         rollButton.addActionListener(this);
         rollButton.setPreferredSize(new Dimension(300, 75));
-
+        
+        //Rolls for the first set of die rolls
         rollUnselected();
     }
-
+    //Creates and sets up the table for keeping track of each player, along with how many points they earned in each category.
     private void initTable() {
         table = new JTable(21, 3);
         table.setRowHeight(24);
@@ -187,7 +184,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
 
         table.repaint();
     }
-
+    //
     public void actionPerformed(ActionEvent e){
         if(e.getSource() == soloPlay){
             frame.remove(tablePanel);
@@ -296,6 +293,10 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
                     diceButtons[i].setIcon(pics[0][rolls[i]-1]);
                 }
             }
+            System.out.print(currPlayer.getName() + ":");
+            for(int i: rolls)
+            System.out.print(" " + i);
+            System.out.println();
             update();
         }
     }
@@ -353,9 +354,12 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
             winner.setText(player2.getName() + " wins with a score of " + (String)table.getValueAt(20,2) + "!");
         else
             winner.setText("It's a tie between " + player1.getName() + " and " + player2.getName() + "!");
+        winner.setFont(new Font("Arial", Font.PLAIN, 32));
         winnerPanel.add(winner);
+        winnerPanel.setBackground(Color.GREEN);
+        frame.remove(rollPanel);
         frame.remove(scoreButtonPanel);
-        frame.add(winnerPanel, BorderLayout.WEST);
+        frame.add(winnerPanel, BorderLayout.CENTER);
         update();
     }
 
@@ -397,7 +401,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
             });
         textFields.add(player1Name);
         if(!isOnePlayer)
-            textFields.add(player2Name);
+        textFields.add(player2Name);
         textFields.add(accept);
         textFields.add(cancel);
         playerOptions.add(textFields);
