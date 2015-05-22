@@ -3,8 +3,9 @@
  * Name: Giacalone/Kelly/Xue
  * Date: 05/10/2015
  * -------------------------
- * This takes an array od dice values and the clicked button, and returns the
- * correct number of points.
+ * This takes an array of dice values and the clicked button, and returns the
+ * correct number of points. On many options, it must check whether the given
+ * dice denote points or not.
  * NOTE: Author of the selectionSort method: Lewis/Loftus/Cocking
  */
 
@@ -42,7 +43,7 @@ public class Points
             for(int i: sort)
                 if(i == 6) total += 6;
         }
-        else if(button.getText().equals("3 of a Kind")) {
+        else if(button.getText().equals("3 of a Kind")) { // total = sum of dice
             if((sort[0] == sort[1] && sort[1] == sort[2])
                 || (sort[1] == sort[2] && sort[2] == sort[3])
                 || (sort[2] == sort[3] && sort[3] == sort[4])) {
@@ -50,20 +51,20 @@ public class Points
                     total += i;
             }
         }
-        else if(button.getText().equals("4 of a Kind")) {
+        else if(button.getText().equals("4 of a Kind")) { // total = sum of dice
             if((sort[0] == sort[1] && sort[1] == sort[2] && sort[2] == sort[3])
                 || (sort[1] == sort[2] && sort[2] == sort[3] && sort[3] == sort[4])) {
                 for(int i: sort)
                     total += i;
             }
         }
-        else if(button.getText().equals("Full House")) {
+        else if(button.getText().equals("Full House")) { // total = 25
             if(sort[0] == sort[1] && sort[2] == sort[3] && (sort[3] == sort[4]))
                 total = 25;
             else if(sort[0] == sort[1] && sort[1] == sort[2] && sort[3] == sort[4])
                 total = 25;
         }
-        else if(button.getText().equals("Sm. Straight")) {
+        else if(button.getText().equals("Sm. Straight")) { // total = 30
             total = 30;
             for(int i = 1; i < sort.length - 1; i++)
                 if(sort[i] != sort[i - 1] + 1)
@@ -76,17 +77,17 @@ public class Points
             }
             
         }
-        else if(button.getText().equals("Lg. Straight")) {
+        else if(button.getText().equals("Lg. Straight")) { // total = 40
             total = 40;
             for(int i = 1; i < sort.length; i++)
                 if(sort[i] != sort[i - 1] + 1)
                     total = 0;
         }
-        else if(button.getText().equals("Chance")) {
+        else if(button.getText().equals("Chance")) { // total = sum of dice
             for(int i: sort)
                 total += i;
         }
-        else if(button.getText().equals("Yahtzee!")) {
+        else if(button.getText().equals("Yahtzee!")) { // total = 50
             if(sort[0] == sort[1] && sort[1] == sort[2] && sort[2] == sort[3] && sort[3] == sort[4])
                 return 50;
         }
