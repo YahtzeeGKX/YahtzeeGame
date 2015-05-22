@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 public class PlayerCard
 {
     protected JComponent[] scoreButtons;
-    private int catsLeft;
+    private int catsLeft; // number of categories/score options remaining
     private String name;
     
     public PlayerCard(){
@@ -28,6 +28,7 @@ public class PlayerCard
         setUpButtons();
     }
     
+    // sets up the player's JButtons
     private void setUpButtons(){
         scoreButtons = new JComponent[13];
         
@@ -46,6 +47,7 @@ public class PlayerCard
         scoreButtons[12] = new JButton("Chance");
     }
     
+    // Returns the index of a requested button in the scoreButtons array
     public int indexOfButton(JButton button){
         for(int i=0; i<scoreButtons.length;i++)
         if(button == scoreButtons[i])
@@ -53,26 +55,31 @@ public class PlayerCard
         return -1;
     }
     
+    // Removes the specified button from socreButtons and decreases number of  score options remaining
     public void removeButton(int index){
         scoreButtons[index] = new JLabel();
         catsLeft--;
     }
     
     //@Pre: 0 <= index < scoreButtons.length
+    // returns the JComponent at the specified index in scoreButtons
     public JComponent getComponentAtIndex(int index){
         return scoreButtons[index];
     }
     
+    // returns whether there are any score options left (whether the game is done)
     public boolean isDone(){
         if(catsLeft <= 0)
         return true;
         return false;
     }
     
+    // gets the name of the player
     public String getName(){
         return name;
     }
     
+    // sets the name of the player
     public void setName(String name){
         this.name = name;
     }
