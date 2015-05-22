@@ -282,13 +282,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
 
         update();
 
-        if(player1.isDone() && player2.isDone()){
-            rollButton.setText("New Game");
-            findTotals();
-            update();
-        }
-        else
-            rollUnselected();
+         rollUnselected();
 
         if(currPlayer == ai)
             ai.turn();
@@ -308,15 +302,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
 
     // rolls all the unselected dice
     public void rollUnselected(){
-        if(rollButton.getText().equals("New Game")){
-            frame.remove(tablePanel);
-            frame.remove(diceButtonPanel);
-            frame.remove(scoreButtonPanel);
-            frame.remove(rollPanel);
-            frame.remove(winnerPanel);
-            newGame();
-        }
-        else if(rollsLeft > 0){
+        if(rollsLeft > 0){
             rollsLeft--;
             for(int i=0; i<diceButtons.length; i++){
                 if(!isSelectedButton(i)){
@@ -330,7 +316,6 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
 
     // updates and repaints all parts of the GUI
     public void update(){
-        if(!rollButton.getText().equals("New Game"))
             rollButton.setText("Roll Unselected Dice (" + rollsLeft + " rolls remaining)");
 
         diceButtonPanel.removeAll();
