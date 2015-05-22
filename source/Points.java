@@ -9,7 +9,7 @@
  * NOTE: Author of the selectionSort method: Lewis/Loftus/Cocking
  */
 
-import javax.swing.*;
+import javax.swing.JButton;
 
 public class Points
 {
@@ -71,8 +71,8 @@ public class Points
                     total = 0;
             if(total == 0) {
                 total = 30;
-                for(int i = 2; i < sort.length; i++)
-                if(sort[i] != sort[i - 1] + 1)
+                for(int i = 0; i < sort.length - 2; i++)
+                if(sort[i] != sort[i + 1] - 1)
                     total = 0;
             }
             
