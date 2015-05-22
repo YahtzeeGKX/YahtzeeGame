@@ -65,10 +65,11 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
     //Resets the game without creating a new frame. All information is put back to their default values.
     private void newGame() {
         // creates a new frame for the scoreboard
+        if(frame != null) frame.dispose();
         frame = new JFrame("Yahtzee!");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        isOnePlayer = true;
+        
         
 
         //AI is created
@@ -135,6 +136,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
     }
     //Creates the frame, then starts the game. This is called on the first creation of the game.
     public YahtzeeGUI() {
+        isOnePlayer = true;
         player1 = new PlayerCard("Player 1");
         player2 = new PlayerCard("Player 2");
         newGame();
