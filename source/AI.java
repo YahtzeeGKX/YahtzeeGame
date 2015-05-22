@@ -37,9 +37,9 @@ public class AI extends PlayerCard{
                 
                 // Full House
                 else if(turn == 8) {
-                    if(!gui.isSelectedButton(b) && gui.getRoll(b) == findMost() && findFreq()[lookFor - 1] < 3)
+                    if(!gui.isSelectedButton(b) && gui.getRoll(b) == lookFor && findFreq()[lookFor - 1] <= 3)
                         gui.determineButton(b, true);
-                    else if(!gui.isSelectedButton(b) && gui.getRoll(b) == findMost() && findFreq()[lookFor2 - 1] < 3)
+                    else if(!gui.isSelectedButton(b) && gui.getRoll(b) == lookFor2 && findFreq()[lookFor2 - 1] <= 3)
                         gui.determineButton(b, true);
                 }
                 
