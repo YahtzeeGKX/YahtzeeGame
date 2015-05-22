@@ -51,10 +51,10 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
     //unselected dice, and the second row are a copy that have a yellow background.
     //(JButton.setBackground() cannot be used because Mac Java treats transparent color as white.
     private ImageIcon[][] pics = {
-            {new ImageIcon("Pictures/1.png"), new ImageIcon("Pictures/2.png"), new ImageIcon("Pictures/3.png"), 
-                new ImageIcon("Pictures/4.png"), new ImageIcon("Pictures/5.png"), new ImageIcon("Pictures/6.png")}, 
-            {new ImageIcon("Pictures/1Y.png"), new ImageIcon("Pictures/2Y.png"), new ImageIcon("Pictures/3Y.png"), 
-                new ImageIcon("Pictures/4Y.png"), new ImageIcon("Pictures/5Y.png"), new ImageIcon("Pictures/6Y.png")}};
+            {createImageIcon("Pictures/1.png"), createImageIcon("Pictures/2.png"), createImageIcon("Pictures/3.png"), 
+                createImageIcon("Pictures/4.png"), createImageIcon("Pictures/5.png"), createImageIcon("Pictures/6.png")}, 
+            {createImageIcon("Pictures/1Y.png"), createImageIcon("Pictures/2Y.png"), createImageIcon("Pictures/3Y.png"), 
+                createImageIcon("Pictures/4Y.png"), createImageIcon("Pictures/5Y.png"), createImageIcon("Pictures/6Y.png")}};
     
     //The AI Player
     private AI ai;
@@ -439,5 +439,13 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         playerOptions.pack();
         playerOptions.setLocationRelativeTo(frame);
         playerOptions.setVisible(true);
+    }
+    
+    // Solves the problem where java does not load resources properly
+    // when being bundled into a JAR file. 
+    protected ImageIcon createImageIcon (String path) {
+        java.net.URL source = getClass().getResource(path);
+        if (source != null) return new ImageIcon (source);
+        else return null;
     }
 }
