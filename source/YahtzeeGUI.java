@@ -69,8 +69,7 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         isOnePlayer = true;
-        player1 = new PlayerCard("Player 1");
-        player2 = new PlayerCard("Player 2");
+        
 
         //AI is created
         ai = new AI(this);
@@ -136,6 +135,8 @@ public class YahtzeeGUI extends JFrame implements ActionListener {
     }
     //Creates the frame, then starts the game. This is called on the first creation of the game.
     public YahtzeeGUI() {
+        player1 = new PlayerCard("Player 1");
+        player2 = new PlayerCard("Player 2");
         newGame();
     }
 
