@@ -1,7 +1,5 @@
-## YahtzeeGame
-* The code management of COM40 final project (Yahtzee)
-* author: Luke Giacalone, Ben Kelly, Harry Xue
-* date: May 8 2015
+# YahtzeeGame
+
 
 Copyright (c) 2015 Luke Giacalone, Ben Kelly, Harry Xue
 
